@@ -50,24 +50,30 @@ void main()
         angle_formed[loop] = (atan(a1/a2) * 180)/PI;
         printf("\nangle_formed[%d]:%f",loop+1,angle_formed[loop]);
     }
-    file_output_data = fopen("output_data.csv", "a");
-    if (!file_output_data) { printf("Error creating/ opening line"); exit(1); }    
-    fprintf(file_output_data,"\n");
     //pbst2();
     // clockwise = 1, anticlockwise = 0
-    int m1 = 0, m2 = 0, m3, m4, bot_dir; 
+    int m1 = 0, m2 = 0, m3, m4, bot_dir[25]; 
     // assuming that one revolution of the wheel, there is a 180° turning
     float rev[25], rota_per_turn = 180;
     for (loop = 0; loop < row; loop++)
     {
-        if (angle_formed[loop] > 0) bot_dir=1;//clockwise
-        if (angle_formed[loop] < 0) bot_dir=0;//anticlockwise
-        if (angle_formed[loop] == 0) {rev[loop] = 0; bot_dir=0;}
+        if (angle_formed[loop] > 0) bot_dir[loop]=1;//clockwise
+        if (angle_formed[loop] < 0) bot_dir[loop]=0;//anticlockwise
+        if (angle_formed[loop] == 0) {rev[loop] = 0; bot_dir[loop]=0;}
         rev[loop] = abs((2000*angle_formed[loop])/180);
-        printf("\n rev[%d] = %f : direction = %d",loop,rev[loop],bot_dir);
+        //instead just doing this, a better approach would be as one rev of motor = 10pi cms, radius = 30 cms, cal angle based on that value
+        // but opting this metod as its quicker
+        printf("\n rev[%d] = %f : direction = %d",loop,rev[loop],bot_dir[loop]);
     }
-    
-    
+    //writing into the output file
+    file_output_data = fopen("output_data.csv", "a");
+    if (!file_output_data) { printf("Error creating/ opening line"); exit(1); }    
+    for (loop = 0; loop < row; loop++)
+    {
+        if (bot_dir[loop] == 1) fprintf(file_output_data,"%f,%d,%d,%d,%d,%s\n",angle_formed[loop],m1,m2,m3=(int)rev[loop],m4=(int)rev[loop],"clockwise");
+        if (bot_dir[loop] == 0) fprintf(file_output_data,"%f,%d,%d,%d,%d,%s\n",angle_formed[loop],m1,m2,m3=(int)rev[loop],m4=(int)rev[loop],"anticlockwise");
+        
+    }
     fclose(file_output_data);
 }
  
