@@ -60,7 +60,7 @@ void pbst2()
         // a pivot force with center as the other sensor
         steps[loop] = (int)((189*angle_formed[loop]*rev_per_rotation)/360);
         if (steps[loop] > 0) {bot_dir1[loop] = 0; m3[loop] = steps[loop]; m4[loop] = 0;}
-        if (steps[loop] < 0) {bot_dir1[loop] = 1; m3[loop] = 0; m4[loop] = steps[loop];}
+        if (steps[loop] < 0) {bot_dir1[loop] = 1; m3[loop] = 0; m4[loop] = abs(steps[loop]);}
         if (steps[loop] == 0) {bot_dir1[loop] = 1; m3[loop] =0; m4[loop] = 0;}
         printf("\n rev[%d] = %d : direction = %d",loop,m3[loop],bot_dir1[loop]);
     }
