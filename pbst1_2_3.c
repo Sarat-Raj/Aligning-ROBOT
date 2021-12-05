@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
-float PI = 3.14159, angle_formed[25], sensor1Data[25], sensor2Data[25], a1[25], a2 = 30.0, current_distance_from_wall[25];
+float PI = 3.14159, angle_formed[25], sensor1Data[25], sensor2Data[25], a1[25], a2 = 30.0, current_distance_from_wall[25], cm_per_2k_rev = 15.708;
 int loop = 0,  row = 0, column = 0, sD1 = 0, sD2 = 0, rev_per_rotation = 2000, rota_per_turn = 180, m1[25], m2[25], m3[25], m4[25], rev[25], bot_dir1[25], bot_dir2[25]; 
 // a1 is the difference between two sensor data (opp side of the angle)
 // a2 is the distance betweeen the two sensors (adj side of the angle)
@@ -72,13 +72,13 @@ void pbst3()
         current_distance_from_wall[loop] = abs(a1[loop]);
         if (current_distance_from_wall[loop] > 30) 
         {
-            m1[loop] = (current_distance_from_wall[loop]-30)*2000; 
+            m1[loop] = (int)((current_distance_from_wall[loop]-30)*2000)/cm_per_2k_rev; 
             m2[loop] = m1[loop]; 
             bot_dir2[loop]=1;
         }
         if (current_distance_from_wall[loop] < 30) 
         { 
-            m1[loop] = (30 - current_distance_from_wall[loop])*2000; 
+            m1[loop] = (int)((30 - current_distance_from_wall[loop])*2000)/cm_per_2k_rev; 
             m2[loop] = m1[loop]; 
             bot_dir2[loop]=0;
         }
